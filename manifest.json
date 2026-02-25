@@ -1,0 +1,15 @@
+{
+  "name": "Помічник Доступності",
+  "short_name": "Допомога",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ff3b30",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1057/1057134.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
