@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Помічник Доступності</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        #output {
+            background: #222;
+            color: #ffff00;
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #444;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            flex-grow: 1;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 20px;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            transition: transform 0.1s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .btn:active { transform: scale(0.95); }
+
+        /* Кольорова схема */
+        .sos { grid-column: 1 / -1; background: #ff3b30; font-size: 3rem; }
+        .water { background: #007aff; }
+        .toilet { background: #5856d6; }
+        .ramp { background: #ff9500; }
+        .floor { background: #af52de; }
+        .thanks { background: #4cd964; grid-column: 1 / -1; height: 100px; }
+
+        span.icon { font-size: 3rem; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <div id="output">Натисніть кнопку</div>
+
+    <div class="grid">
+        <button class="btn sos" onclick="speak('Мені потрібна термінова допомога!')">
+            <span class="icon">🆘</span> SOS
+        </button>
+        
+        <button class="btn water" onclick="speak('Я хочу пити, будь ласка')">
+            <span class="icon">💧</span> ПИТИ
+        </button>
+
+        <button class="btn toilet" onclick="speak('Мені потрібно в туалет')">
+            <span class="icon">🚽</span> ТУАЛЕТ
+        </button>
+
+        <button class="btn ramp" onclick="speak('Допоможіть, будь ласка, з пандусом або бордюром')">
+            <span class="icon">📐</span> ПАНДУС
+        </button>
+
+        <button class="btn floor" onclick="speak('Допоможіть піднятися на поверх, ліфт не працює')">
+            <span class="icon">🏢</span> ПОВЕРХ
+        </button>
+
+        <button class="btn thanks" onclick="speak('Дуже дякую за допомогу!')">
+            <span class="icon">👍</span> ДЯКУЮ
+        </button>
+    </div>
+
+    <script>
+        // Функція озвучення (працює локально на пристрої)
+        function speak(text) {
+            document.getElementById('output').innerText = text;
+            
+            // Зупиняємо попереднє мовлення, якщо воно ще триває
+            window.speechSynthesis.cancel();
+            
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'uk-UA';
+            msg.rate = 0.9; // Трохи повільніше для чіткості
+            window.speechSynthesis.speak(msg);
+        }
+
+        // Реєстрація "офлайн-режиму"
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js');
+            });
+        }
+    </script>
+</body>
+</html>
